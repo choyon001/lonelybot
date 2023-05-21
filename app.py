@@ -74,11 +74,14 @@ def main():
     return render_template('main.html',params=params)
 
 
-
 @app.route('/newsfeed',methods=['GET'])
 def newsfeed():
     posts = Newsfeed.query.filter_by().all()[0:params['no_of_blogs']]
     return render_template('newsfeed.html',params=params,newsfeed=newsfeed,posts=posts)
+@app.route('/profile')
+def profile():
+    return render_template('profile.html',params=params)
+
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
