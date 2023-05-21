@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,session,redirect
+from flask import Flask, render_template,request,session,redirect,flash,url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import  datetime
 import json
@@ -23,10 +23,23 @@ class Contacts(db.Model):
     date = db.Column(db.String(12), unique=False, nullable=True)
     email = db.Column(db.String(20), unique=False, nullable=False)
 
+#creating newsfeed class for db table named newsfeed
+
+class Newsfeed(db.Model):
+    sno = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(40), unique=False, nullable=False)
+    slug = db.Column(db.String(30), unique=False, nullable=False)
+    content = db.Column(db.String(120), unique=False, nullable=True)
+    date = db.Column(db.String(20), unique=False, nullable=False)
+    img_file = db.Column(db.String(30), unique=False, nullable=False)
+    href = db.Column(db.String(30), unique=False, nullable=False)
+
+
 
 
 @app.route("/")
 def home():
+
     return render_template('home.html',params=params)
 
 @app.route("/signup")
@@ -57,9 +70,15 @@ def logout():
 
 @app.route("/main")
 def main():
+    # posts = Newsfeed.query.filter_by().all()[0:params['no_of_blogs']]
     return render_template('main.html',params=params)
 
 
+
+@app.route('/newsfeed',methods=['GET'])
+def newsfeed():
+    posts = Newsfeed.query.filter_by().all()[0:params['no_of_blogs']]
+    return render_template('newsfeed.html',params=params,newsfeed=newsfeed,posts=posts)
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():

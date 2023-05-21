@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/lonelybot.iml" filepath="$PROJECT_DIR$/.idea/lonelybot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/lonelybot2.iml" filepath="$PROJECT_DIR$/.idea/lonelybot2.iml" />
     </modules>
   </component>
 </project>

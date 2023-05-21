@@ -5,6 +5,7 @@
     "prod_uri": "mysql://root:@localhost/lonelybot",
     "site_name": "Lonely bot",
     "admin_user": "choyon@gmail.com",
-    "admin_pass": "ghaurabin"
+    "admin_pass": "ghaurabin",
+    "no_of_blogs": 5
   }
 }

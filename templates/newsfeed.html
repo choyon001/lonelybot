@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block body %}
+    </div>
+<div class="p-5">
+
+{% for newsfeed in posts %}
+    <div class="card mb-3 bg-dark bg-gradient w-50 text-center mx-auto pb-2">
+        <div class=" text-center  ">
+            <img class="card-img-top img-fluid  h-25" src="/static/img/{{ newsfeed.img_file }}" alt="Card image cap">
+        </div>
+        <hr>
+        <div class="card-body">
+        <h5 class="card-title text-light fw-bold">{{ newsfeed.title }}</h5>
+        <p class="card-text text-light">{{ newsfeed.content }}.....</p>
+        </div>
+        <div class="pb-1">
+            <form action="{{ newsfeed.href }} ">
+                <button type="submit" class="btn btn-info"  formtarget="_blank">Click me</button>
+            </form>
+
+            <hr>
+            <p class="card-text text-center"><small class=" text-light"> updated on {{ newsfeed.date }} </small></p>
+
+        </div>
+    </div>
+
+{% endfor %}
+    <button type="submit" class="btn btn-secondary" >Load More</button>
+</div>
+{% endblock %}
