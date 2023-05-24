@@ -2,6 +2,7 @@ from flask import Flask, render_template,request,session,redirect,flash,url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import  datetime
 import json
+import math
 local_server = True
 with open("templates/config.json","r") as c:
     params = json.load(c)['params']
@@ -78,6 +79,8 @@ def main():
 def newsfeed():
     posts = Newsfeed.query.filter_by().all()[0:params['no_of_blogs']]
     return render_template('newsfeed.html',params=params,newsfeed=newsfeed,posts=posts)
+
+
 @app.route('/profile')
 def profile():
     return render_template('profile.html',params=params)
