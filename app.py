@@ -37,7 +37,7 @@ class Newsfeed(db.Model):
 # creating registered user class
 
 class Registered(db.Model):
-    username = db.Column(db.String(40), unique=False, nullable=False,primary_key=True)
+    username = db.Column(db.String(40), unique=True, nullable=False,primary_key=True)
     name = db.Column(db.String(30), unique=False, nullable=False)
     password = db.Column(db.String(120), unique=False, nullable=True)
     date = db.Column(db.String(20), unique=False, nullable=False)
@@ -45,9 +45,14 @@ class Registered(db.Model):
 
 
 @app.route("/")
-def home():
+def firstpage():
 
     return render_template('home.html',params=params)
+
+@app.route("/home")
+def home():
+
+    return render_template('main.html',params=params)
 
 @app.route("/signup",methods = ['GET','POST'])
 def signup():
@@ -79,29 +84,32 @@ def signup():
             return render_template('signin.html', params=params)
     return render_template('signup.html',params=params)
 
-@app.route("/signin",methods=["GET","POST"])
-def signin():
-    # if user already signed in
-    if ('user' in session and session['user'] == params['admin_user']):
-        return  render_template('main.html')
-    if request.method == 'POST':
-        username = request.form.get('uname')
-        userpass = request.form.get('pass')
-        # set the session
-        if(username == params['admin_user'] and userpass == params['admin_pass']):
-            session['user'] = username
-            return  render_template('main.html')
-        else:
-            flash("SORRY ! Your username and password don't match.Try Again!", category='error')
-            return render_template('signin.html', params=params)
 
-    return render_template('signin.html',params=params)
+@app.route('/signin', methods=['GET','POST'])
+def get_password():
+    if request.method == "POST":
+        username = request.form.get("uname")
+        password = request.form.get("pass")
+
+        user = Registered.query.filter_by(username=username).first()
+        if user:
+            if(user.password == password):
+                session['user'] = username
+                return render_template('main.html')
+            else:
+                flash("Sorry! Your password is not correct !Try Again", category='error')
+                return render_template('signin.html')
+        else:
+            flash("Sorry! Your username/password not exist.Try again",category='error')
+            return render_template('signin.html')
+    return render_template('signin.html')
+
 
 @app.route("/logout")
 def logout():
     session.pop('user')
-    return render_template('home.html')
-
+    # return render_template('home.html')
+    return redirect('/')
 
 @app.route("/main")
 def main():
