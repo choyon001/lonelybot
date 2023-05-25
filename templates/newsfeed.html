@@ -15,7 +15,7 @@
         </div>
         <div class="pb-1">
             <form action="{{ newsfeed.href }} ">
-                <button type="submit" class="btn btn-info"  formtarget="_blank">Learn More</button>
+                <button type="submit" class="btn btn-info"  formtarget="_blank">Click me</button>
             </form>
 
             <hr>
@@ -25,8 +25,6 @@
     </div>
 
 {% endfor %}
-     <form action="{{ newsfeed.href }} ">
-        <button type="submit" class="btn btn-secondary" href="/more">Load More</button>
-     </form>
+    <button type="submit" class="btn btn-secondary" >Load More</button>
 </div>
 {% endblock %}

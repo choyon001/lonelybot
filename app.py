@@ -2,7 +2,6 @@ from flask import Flask, render_template,request,session,redirect,flash,url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import  datetime
 import json
-import math
 local_server = True
 with open("templates/config.json","r") as c:
     params = json.load(c)['params']
@@ -35,6 +34,13 @@ class Newsfeed(db.Model):
     img_file = db.Column(db.String(30), unique=False, nullable=False)
     href = db.Column(db.String(30), unique=False, nullable=False)
 
+# creating registered user class
+
+class Registered(db.Model):
+    username = db.Column(db.String(40), unique=False, nullable=False,primary_key=True)
+    name = db.Column(db.String(30), unique=False, nullable=False)
+    password = db.Column(db.String(120), unique=False, nullable=True)
+    date = db.Column(db.String(20), unique=False, nullable=False)
 
 
 
@@ -43,8 +49,34 @@ def home():
 
     return render_template('home.html',params=params)
 
-@app.route("/signup")
+@app.route("/signup",methods = ['GET','POST'])
 def signup():
+    if(request.method == 'POST'):
+        username = request.form.get('username')
+        name = request.form.get('name')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm')
+        if(password != confirm_password):
+            flash("Your password don't match.Try Again!",category='error')
+            return render_template('signup.html')
+        elif(password==confirm_password and username!=''):
+            user = Registered.query.filter_by(username=username).first()
+            if not user:
+                # the email doesnt exist
+                flash("Congrats! You are in ! Your account has been created. ", category='success')
+                entry = Registered(username=username, name=name, password=password, date=datetime.now())
+                db.session.add(entry)
+                db.session.commit()
+                return render_template('signin.html', params=params)
+            else:
+                # the email exists
+                flash("The email/username is already exist ! Try with another username/email", category='error')
+                return render_template('signup.html')
+
+
+        else:
+            flash("Congrats! You are in ! Your account has been created. ", category='success')
+            return render_template('signin.html', params=params)
     return render_template('signup.html',params=params)
 
 @app.route("/signin",methods=["GET","POST"])
@@ -59,7 +91,9 @@ def signin():
         if(username == params['admin_user'] and userpass == params['admin_pass']):
             session['user'] = username
             return  render_template('main.html')
-
+        else:
+            flash("SORRY ! Your username and password don't match.Try Again!", category='error')
+            return render_template('signin.html', params=params)
 
     return render_template('signin.html',params=params)
 
@@ -79,8 +113,6 @@ def main():
 def newsfeed():
     posts = Newsfeed.query.filter_by().all()[0:params['no_of_blogs']]
     return render_template('newsfeed.html',params=params,newsfeed=newsfeed,posts=posts)
-
-
 @app.route('/profile')
 def profile():
     return render_template('profile.html',params=params)

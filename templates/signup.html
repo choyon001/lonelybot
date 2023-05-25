@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
 </head>
 <body>
+{#    ************** ALERT MESSAGE ***********************#}
+
+         {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+{#*************************************************************************************************#}
     <section class="vh-100" style="background-color: #eee;">
         <div class="container h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
@@ -24,32 +44,32 @@
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                           <div class="form-outline flex-fill mb-0">
-                            <input type="text" id="name" name="name" class="form-control"  />
-                            <label class="form-label" for="form3Example1c">Your Name</label>
+                            <input required type="text" id="name" name="name" class="form-control"  />
+                            <label class="form-label" for="name">Your Name</label>
                           </div>
                         </div>
       
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                           <div class="form-outline flex-fill mb-0">
-                            <input type="email" id="username" name="username" class="form-control" />
-                            <label class="form-label" for="form3Example3c">Your Email/ username</label>
+                            <input required type="email" id="username" name="username" class="form-control" />
+                            <label class="form-label" for="username">Your Email</label>
                           </div>
                         </div>
       
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                           <div class="form-outline flex-fill mb-0">
-                            <input type="password" id="password" name="password" class="form-control" />
-                            <label class="form-label" for="form3Example4c">Password</label>
+                            <input required type="password" id="password" name="password" class="form-control" />
+                            <label class="form-label" for="password">Password</label>
                           </div>
                         </div>
       
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                           <div class="form-outline flex-fill mb-0">
-                            <input type="password" id="confirm" name="confirm" class="form-control" />
-                            <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                            <input required type="password" id="confirm" name="confirm" class="form-control" />
+                            <label class="form-label" for="confirm">Repeat your password</label>
                           </div>
                         </div>
     
@@ -65,14 +85,20 @@
       
                       <img src="/static/img/bot.png"
                         class="img-fluid" alt="image not available">
-      
+
                     </div>
+
                   </div>
+                    <div class="container signin text-center">
+                        <p>Already have an account? <a href="/signin">Sign in</a>.</p>
+                        </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+
       </section>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
