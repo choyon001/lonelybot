@@ -44,6 +44,14 @@ class Registered(db.Model):
     date = db.Column(db.String(20), unique=False, nullable=False)
 
 
+#  chatbot conversation
+class ChatbotConversation(db.Model):
+    id = db.Column(db.String(40), unique=True, nullable=False,primary_key=True)
+    userinput = db.Column(db.String(255), nullable=False)
+    botresponse = db.Column(db.String(255), nullable=False)
+    tag = db.Column(db.String(50), nullable=False)
+    timestamp = db.Column(db.String(20), unique=False, nullable=False)
+
 #
 @app.route("/")
 def firstpage():
@@ -53,20 +61,34 @@ def firstpage():
 def index_get():
     return render_template("base.html",params=params)
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["GET","POST"])
 def predict():
     text = request.get_json().get("message")
     response = get_response(text)
     message = {"answer": response}
+
+    if "user" in session:
+        user_email = session["user"]
+        conversation_entry = ChatbotConversation.query.filter_by(id=user_email).first()
+
+        if conversation_entry:
+            conversation_entry.userinput += "\n" + text  # Append the new user input
+            conversation_entry.botresponse += "\n" + response  # Append the new bot response
+            conversation_entry.timestamp = datetime.now()
+        else:
+            conversation_entry = ChatbotConversation(
+                id=user_email,
+                userinput=text,
+                botresponse=response,
+                tag="",  # Set the appropriate tag if applicable
+                timestamp=datetime.now(),
+            )
+
+        db.session.add(conversation_entry)
+        db.session.commit()
+
     return jsonify(message)
 
-
-
-#
-# @app.route("/home")
-# def home():
-#
-#     return render_template('main.html',params=params)
 
 @app.route("/signup",methods = ['GET','POST'])
 def signup():
@@ -109,7 +131,7 @@ def get_password():
         if user:
             if(user.password == password):
                 session['user'] = username
-                return render_template('main.html')
+                return render_template('base.html')
             else:
                 flash("Sorry! Your password is not correct !Try Again", category='error')
                 return render_template('signin.html')
