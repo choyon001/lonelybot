@@ -1,0 +1,50 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<!-- <link rel="stylesheet" href="chatbotstyle.css"> -->#}
+{#<link rel="stylesheet" href="//static/css/chatbotstyle.css">#}
+{#<!-- <link rel="stylesheet" href="/static/css/bootstrap.min.css"> -->#}
+{#<script src="../assets/js/color-modes.js"></script>#}
+{#    <link rel="stylesheet" href="/static/css/bootstrap.min.css">#}
+{#    <link rel="stylesheet" href="/static/css/styles.css">#}
+{#    <link rel="stylesheet" href="/static/css/home.css">#}
+{##}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Chatbot</title>#}
+{#    #}
+{#</head> #}
+{#<body>#}
+{% extends 'layout.html' %}
+{% block body %}
+</div>
+<div class="container">
+    <div class="chatbox">
+        <div class="chatbox__support">
+            <div class="chatbox__header">
+                <div class="chatbox__image--header">
+                    <img src="\static\img\bot.png" alt="image" srcset="" style='height:320px; border-radius:5px'>
+                </div>
+                <div class="chatbox__content--header">
+                    <h4 class="chatbox__heading--header">LonelyBot</h4>
+                    <p class="chatbox__description--header">Hi. My name is LonelyBot. How can I help you?</p>
+                </div>
+            </div>
+            <div class="chatbox__messages">
+                <div></div>
+            </div>
+            <div class="chatbox__footer">
+                <input type="text" placeholder="Write a message...">
+                <button class="chatbox__send--footer send__button">Send</button>
+            </div>
+        </div>
+        <div class="chatbox__button">
+            <button><img src="./images/chatbox-icon.svg" /></button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>  
+<script src="/static/js/chatapp.js"></script>
+{#</body>#}
+{#</html>#}
+{% endblock %}

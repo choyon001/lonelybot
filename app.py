@@ -1,7 +1,8 @@
-from flask import Flask, render_template,request,session,redirect,flash,url_for
+from flask import Flask, render_template,request,session,redirect,flash,url_for,jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import  datetime
 import json
+from chat import get_response
 local_server = True
 with open("templates/config.json","r") as c:
     params = json.load(c)['params']
@@ -43,16 +44,29 @@ class Registered(db.Model):
     date = db.Column(db.String(20), unique=False, nullable=False)
 
 
-
+#
 @app.route("/")
 def firstpage():
 
     return render_template('home.html',params=params)
-
 @app.route("/home")
-def home():
+def index_get():
+    return render_template("base.html",params=params)
 
-    return render_template('main.html',params=params)
+@app.route("/predict", methods=["POST"])
+def predict():
+    text = request.get_json().get("message")
+    response = get_response(text)
+    message = {"answer": response}
+    return jsonify(message)
+
+
+
+#
+# @app.route("/home")
+# def home():
+#
+#     return render_template('main.html',params=params)
 
 @app.route("/signup",methods = ['GET','POST'])
 def signup():
